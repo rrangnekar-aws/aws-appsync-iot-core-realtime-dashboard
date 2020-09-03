@@ -34,7 +34,7 @@ const NavigationBar: React.FC = () => {
     <AppBar position="fixed">
         <Toolbar>
             <Typography variant="h6" className={classes.title}>
-              Bay Health Dashboard
+              Sensor Health Dashboard
             </Typography>
           
           <div className={classes.toolbarButtons}>

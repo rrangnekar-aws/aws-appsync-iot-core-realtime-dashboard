@@ -24,7 +24,8 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 interface IProps {
     title: string,
-    value: number | null
+    value: number | null,
+    timestamp: string
 }
 
 interface IChartData {
@@ -37,7 +38,7 @@ interface IData {
   data: Array<number>
 }
 
-const LineChartWidget: React.FC<IProps> = ({title, value}: IProps) => {
+const LineChartWidget: React.FC<IProps> = ({title, value, timestamp}: IProps) => {
   
   const classes = useStyles();
 
@@ -53,24 +54,27 @@ const LineChartWidget: React.FC<IProps> = ({title, value}: IProps) => {
 
   useEffect(() => {
 
-    const UpdateValues = (value : number)=> {
+    const UpdateValues = (value : number, timestamp : string)=> {
 
       const newChartDataSet = { ...chartData.datasets[0] };
       newChartDataSet.data.push(value);
   
+      var d = new Date(0);
+      d.setUTCSeconds(parseInt(timestamp)/1000);      
+
       const newChartData = {
         ...chartData,
         datasets: [newChartDataSet],
         labels: chartData.labels.concat(
-          new Date().toLocaleTimeString()
+          d.toLocaleTimeString()
         )
       };
   
       setChartData(newChartData);
     }
 
-    if (value) {
-      UpdateValues(value);
+    if (value && timestamp) {
+      UpdateValues(value, timestamp);
     }
 
     // eslint-disable-next-line

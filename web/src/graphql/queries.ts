@@ -35,10 +35,14 @@ export const getSensorValue = /* GraphQL */ `
     getSensorValue(id: $id) {
       id
       sensorId
-      pH
+      co
+      humidity
+      no2
+      o3
+      pm10
+      pm25
+      so2
       temperature
-      salinity
-      disolvedO2
       status
       timestamp
       createdAt
@@ -56,10 +60,14 @@ export const listSensorValues = /* GraphQL */ `
       items {
         id
         sensorId
-        pH
+        co
+        humidity
+        no2
+        o3
+        pm10
+        pm25
+        so2
         temperature
-        salinity
-        disolvedO2
         status
         timestamp
         createdAt

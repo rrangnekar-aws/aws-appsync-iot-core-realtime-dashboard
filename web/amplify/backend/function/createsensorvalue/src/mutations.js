@@ -11,13 +11,13 @@ exports.deleteSensorValue = exports.updateSensorValue = exports.createSensorValu
 // this is an auto generated file. This will be overwritten
 var createSensorValue =
 /* GraphQL */
-"\n  mutation CreateSensorValue(\n    $input: CreateSensorValueInput!\n    $condition: ModelSensorValueConditionInput\n  ) {\n    createSensorValue(input: $input, condition: $condition) {\n      id\n      sensorId\n      pH\n      temperature\n      salinity\n      disolvedO2\n      status\n      timestamp\n      createdAt\n      updatedAt\n    }\n  }\n";
+"\n  mutation CreateSensorValue(\n    $input: CreateSensorValueInput!\n    $condition: ModelSensorValueConditionInput\n  ) {\n    createSensorValue(input: $input, condition: $condition) {\n      id\n      sensorId\n      co\n      humidity\n      no2\n      o3\n      pm10\n      pm25\n      so2\n      temperature\n      status\n      timestamp\n      createdAt\n      updatedAt\n    }\n  }\n";
 exports.createSensorValue = createSensorValue;
 var updateSensorValue =
 /* GraphQL */
-"\n  mutation UpdateSensorValue(\n    $input: UpdateSensorValueInput!\n    $condition: ModelSensorValueConditionInput\n  ) {\n    updateSensorValue(input: $input, condition: $condition) {\n      id\n      sensorId\n      pH\n      temperature\n      salinity\n      disolvedO2\n      status\n      timestamp\n      createdAt\n      updatedAt\n    }\n  }\n";
+"\n  mutation UpdateSensorValue(\n    $input: UpdateSensorValueInput!\n    $condition: ModelSensorValueConditionInput\n  ) {\n    updateSensorValue(input: $input, condition: $condition) {\n      id\n      sensorId\n      co\n      humidity\n      no2\n      o3\n      pm10\n      pm25\n      so2\n      temperature\n      status\n      timestamp\n      createdAt\n      updatedAt\n    }\n  }\n";
 exports.updateSensorValue = updateSensorValue;
 var deleteSensorValue =
 /* GraphQL */
-"\n  mutation DeleteSensorValue(\n    $input: DeleteSensorValueInput!\n    $condition: ModelSensorValueConditionInput\n  ) {\n    deleteSensorValue(input: $input, condition: $condition) {\n      id\n      sensorId\n      pH\n      temperature\n      salinity\n      disolvedO2\n      status\n      timestamp\n      createdAt\n      updatedAt\n    }\n  }\n";
+"\n  mutation DeleteSensorValue(\n    $input: DeleteSensorValueInput!\n    $condition: ModelSensorValueConditionInput\n  ) {\n    deleteSensorValue(input: $input, condition: $condition) {\n      id\n      sensorId\n      co\n      humidity\n      no2\n      o3\n      pm10\n      pm25\n      so2\n      temperature\n      status\n      timestamp\n      createdAt\n      updatedAt\n    }\n  }\n";
 exports.deleteSensorValue = deleteSensorValue;

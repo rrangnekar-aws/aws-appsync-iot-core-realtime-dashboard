@@ -25,10 +25,15 @@ interface ISensorSubscriptionResponse {
     data: {
       onCreateSensorValue: {
         name: string,
-        pH: number,
+        co: number,
+        humidity: number,
+        no2: number,
+        o3: number,
+        pm10: number,
+        pm25: number,
+        so2: number,
         temperature: number,
-        salinity: number,
-        disolvedO2: number
+        timestamp: string
       }
     }
   }
@@ -40,10 +45,15 @@ const SensorPage: React.FC = () => {
   const { id } = useParams();
 
   const [name, setName] = useState("Fetching sensor data...");
-  const [pH, setPH] = useState<number | null>(null);
+  const [co, setCo] = useState<number | null>(null);
+  const [humidity, setHumidity] = useState<number | null>(null);
+  const [no2, setNo2] = useState<number | null>(null);
+  const [o3, setO3] = useState<number | null>(null);
+  const [pm10, setPm10] = useState<number | null>(null);
+  const [pm25, setPm25] = useState<number | null>(null);
+  const [so2, setSo2] = useState<number | null>(null);
   const [temperature, setTemperature] = useState<number | null>(null);
-  const [salinity, setSalinity] = useState<number | null>(null);
-  const [disolvedO2, setDisolvedO2] = useState<number | null>(null);
+  const [timestamp, setTimestamp] = useState<string>("");
   const [readyToSubscribe, setReadyToSubscribe] = useState(false);
 
   //fetch sensor to get name
@@ -86,12 +96,15 @@ const SensorPage: React.FC = () => {
   
           //update the sensor's status in state
           if (response.value.data.onCreateSensorValue) {
-
-            setPH(response.value.data.onCreateSensorValue.pH);
+            setCo(response.value.data.onCreateSensorValue.co);
+            setHumidity(response.value.data.onCreateSensorValue.humidity);
+            setNo2(response.value.data.onCreateSensorValue.no2);
+            setO3(response.value.data.onCreateSensorValue.o3);
+            setPm10(response.value.data.onCreateSensorValue.pm10);
+            setPm25(response.value.data.onCreateSensorValue.pm25);
+            setSo2(response.value.data.onCreateSensorValue.so2);
             setTemperature(response.value.data.onCreateSensorValue.temperature);
-            setSalinity(response.value.data.onCreateSensorValue.salinity);
-            setDisolvedO2(response.value.data.onCreateSensorValue.disolvedO2);
-
+            setTimestamp(response.value.data.onCreateSensorValue.timestamp);
             console.log('sensor value received');
           }
         },
@@ -110,7 +123,7 @@ const SensorPage: React.FC = () => {
 
   return (
 
-    <Container className={classes.dashboardContainer} maxWidth="lg">
+    <Container className={classes.dashboardContainer} maxWidth="xl">
       <div className={classes.title}>
         <Typography variant="h5" align="left" >
             {name}
@@ -122,70 +135,134 @@ const SensorPage: React.FC = () => {
         <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <NumericWidget
             mode={WIDGET_MODE.CURRENT}
-            title="pH"
-            value={pH}
+            title="CO (ppm)"
+            value={co}
           />
         </Grid>
 
         <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
           <NumericWidget
             mode={WIDGET_MODE.CURRENT}
-            title="Temperature"
+            title="Humidity (%)"
+            value={humidity}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+          <NumericWidget
+            mode={WIDGET_MODE.CURRENT}
+            title="NO2 (ppm)"
+            value={no2}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+          <NumericWidget
+            mode={WIDGET_MODE.CURRENT}
+            title="O3 (ppm)"
+            value={o3}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+          <NumericWidget
+            mode={WIDGET_MODE.CURRENT}
+            title="PM 10 (μg/m3)"
+            value={pm10}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+          <NumericWidget
+            mode={WIDGET_MODE.CURRENT}
+            title="PM 2.5 (μg/m3)"
+            value={pm25}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+          <NumericWidget
+            mode={WIDGET_MODE.CURRENT}
+            title="SO2 (ppm)"
+            value={so2}
+          />
+        </Grid>
+
+        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
+          <NumericWidget
+            mode={WIDGET_MODE.CURRENT}
+            title="Temperature (°C)"
             value={temperature}
           />
         </Grid>
-
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <NumericWidget
-            mode={WIDGET_MODE.CURRENT}
-            title="Salinity"
-            value={salinity}
-          />
-        </Grid>
-
-        <Grid item xs={12} sm={6} md={3} lg={3} xl={3}>
-          <NumericWidget
-            mode={WIDGET_MODE.CURRENT}
-            title="Disolved O2"
-            value={disolvedO2}
-          />
-        </Grid>
       </Grid>
 
       <Grid container spacing={4}>
-        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <LineChartWidget
-            title="pH"
-            value={pH}
+
+        <Grid item xs={12}>
+            <LineChartWidget
+              title="CO (ppm)"
+              value={co}
+              timestamp={timestamp}
+            />
+        </Grid>
+
+        <Grid item xs={12}>
+          <LineChartWidget
+            title="Humidity (%)"
+            value={humidity}
+            timestamp={timestamp}
           />
         </Grid>
-      </Grid>
 
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <LineChartWidget
-            title="Temperature"
+        <Grid item xs={12}>
+          <LineChartWidget
+            title="NO2 (ppm)"
+            value={no2}
+            timestamp={timestamp}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <LineChartWidget
+            title="O3 (ppm)"
+            value={o3}
+            timestamp={timestamp}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <LineChartWidget
+            title="PM 10 (μg/m3)"
+            value={pm10}
+            timestamp={timestamp}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <LineChartWidget
+            title="PM 2.5 (μg/m3)"
+            value={pm25}
+            timestamp={timestamp}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <LineChartWidget
+            title="SO2 (ppm)"
+            value={so2}
+            timestamp={timestamp}
+          />
+        </Grid>
+
+        <Grid item xs={12}>
+          <LineChartWidget
+            title="Temperature (°C)"
             value={temperature}
+            timestamp={timestamp}
           />
         </Grid>
-      </Grid>
 
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <LineChartWidget
-            title="Salinity"
-            value={salinity}
-          />
-        </Grid>
-      </Grid>
-
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-        <LineChartWidget
-            title="Disolved O2"
-            value={disolvedO2}
-          />
-        </Grid>
       </Grid>
 
     </Container>

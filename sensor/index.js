@@ -28,10 +28,14 @@ async function run(sensor) {
 
     //create a placeholder for the message
     var msg = {
-        pH: 0,
+        co: 0,
+        humidity: 0,
+        no2: 0,
+        o3: 0,
+        pm10: 0,
+        pm25: 0,
+        so2: 0,
         temperature: 0,
-        salinity: 0,
-        disolvedO2: 0,
         timestamp: new Date().getTime()
     }
 
@@ -55,11 +59,15 @@ async function run(sensor) {
         setInterval(function(){
 
             //calculate randome values for each sensor reading
-            msg.pH = RandomValue(50, 100) / 10;
+            msg.co = RandomValue(10, 20) / 100;
+            msg.humidity = RandomValue(700, 800) / 10;
+            msg.no2 = RandomValue(15, 19) / 10;
+            msg.o3 = RandomValue(80, 90) / 100;
+            msg.pm10 = RandomValue(500, 800) / 10;
+            msg.pm25 = RandomValue(250, 500) / 10;
+            msg.so2 = RandomValue(150, 190) / 100;
             msg.temperature = RandomValue(480, 570) / 10;
-            msg.salinity = RandomValue(200, 350) / 10;
-            msg.disolvedO2 = RandomValue(40, 120) / 10;
-
+            
             msg.timestamp = new Date().getTime();
 
             //publish the sensor reading message

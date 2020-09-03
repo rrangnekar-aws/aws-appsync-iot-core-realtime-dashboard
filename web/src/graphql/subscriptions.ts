@@ -7,10 +7,14 @@ export const onCreateSensorValue = /* GraphQL */ `
     onCreateSensorValue(sensorId: $sensorId) {
       id
       sensorId
-      pH
+      co
+      humidity
+      no2
+      o3
+      pm10
+      pm25
+      so2
       temperature
-      salinity
-      disolvedO2
       status
       timestamp
       createdAt
@@ -23,10 +27,14 @@ export const onCreateSensorValues = /* GraphQL */ `
     onCreateSensorValues {
       id
       sensorId
-      pH
+      co
+      humidity
+      no2
+      o3
+      pm10
+      pm25
+      so2
       temperature
-      salinity
-      disolvedO2
       status
       timestamp
       createdAt

@@ -10,10 +10,14 @@ export const createSensorValue = /* GraphQL */ `
     createSensorValue(input: $input, condition: $condition) {
       id
       sensorId
-      pH
+      co
+      humidity
+      no2
+      o3
+      pm10
+      pm25
+      so2
       temperature
-      salinity
-      disolvedO2
       status
       timestamp
       createdAt
@@ -29,10 +33,14 @@ export const updateSensorValue = /* GraphQL */ `
     updateSensorValue(input: $input, condition: $condition) {
       id
       sensorId
-      pH
+      co
+      humidity
+      no2
+      o3
+      pm10
+      pm25
+      so2
       temperature
-      salinity
-      disolvedO2
       status
       timestamp
       createdAt
@@ -48,10 +56,14 @@ export const deleteSensorValue = /* GraphQL */ `
     deleteSensorValue(input: $input, condition: $condition) {
       id
       sensorId
-      pH
+      co
+      humidity
+      no2
+      o3
+      pm10
+      pm25
+      so2
       temperature
-      salinity
-      disolvedO2
       status
       timestamp
       createdAt

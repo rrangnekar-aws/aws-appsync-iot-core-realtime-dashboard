@@ -8,10 +8,14 @@ type SensorValue @model (subscriptions: null)
 {
   id: ID!
   sensorId: String!
-  pH: Float!
+  co: Float!
+  humidity: Float!
+  no2: Float!
+  o3: Float!
+  pm10: Float!
+  pm25: Float!
+  so2: Float!
   temperature: Float!
-  salinity: Float!
-  disolvedO2: Float!
   status: Int!
   timestamp: AWSTimestamp!
 }

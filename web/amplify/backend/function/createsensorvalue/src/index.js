@@ -14,69 +14,82 @@ const region = process.env.REGION
 const appsyncUrl = process.env.API_IOTDASHBOARD_GRAPHQLAPIENDPOINTOUTPUT
 const endpoint = new urlParse(appsyncUrl).hostname.toString();
 
-exports.handler = async (event) => {
+function RandomValue (min, max) {
+    return Math.floor(Math.random() * (max - min + 1) ) + min;
+}
 
-  console.log('event received:' + JSON.stringify(event));
-  
+function submit_appsync(item){
+
   const req = new AWS.HttpRequest(appsyncUrl, region);
 
   //define the graphql mutation to create the sensor values
   const mutationName = 'CreateSensorValue';
   const mutation = require('./mutations').createSensorValue;
 
-  //set a random sensor status 1-3
-  let status = Math.floor(Math.random() * 3) + 1;
+  req.method = "POST";
+  req.headers.host = endpoint;
+  req.headers["Content-Type"] = "application/json";
+  req.body = JSON.stringify({
+      query: mutation,
+      operationName: mutationName,
+      variables: item
+  });
+
+  const signer = new AWS.Signers.V4(req, "appsync", true);
+  signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
+
+  return new Promise((resolve, reject) => {
+    const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
+        result.on('data', (data) => {
+            console.log("data: "+data.toString());
+            resolve(JSON.parse(data.toString()));
+        });
+  });
+
+    httpRequest.write(req.body);
+    httpRequest.end();
+
+  });
+}
+
+
+exports.handler = async (event) => {
+
+  //console.log('event received:' + JSON.stringify(event));
   
-  //create the mutuation input from the sensor event data
-  const item = {
-    input: {
-      sensorId: event.sensorId,
-      pH: event.data.pH,
-      temperature: event.data.temperature,
-      salinity: event.data.salinity,
-      disolvedO2: event.data.disolvedO2,
-      status: status,
-      timestamp: event.data.timestamp
-    }
-  };
-
-  //execute the mutation
-  try {
-
-    req.method = "POST";
-    req.headers.host = endpoint;
-    req.headers["Content-Type"] = "application/json";
-    req.body = JSON.stringify({
-        query: mutation,
-        operationName: mutationName,
-        variables: item
-    });
-
-    const signer = new AWS.Signers.V4(req, "appsync", true);
-    signer.addAuthorization(AWS.config.credentials, AWS.util.date.getDate());
-
-    const data = await new Promise((resolve, reject) => {
-      const httpRequest = https.request({ ...req, host: endpoint }, (result) => {
-          result.on('data', (data) => {
-              resolve(JSON.parse(data.toString()));
-          });
-    });
-
-      httpRequest.write(req.body);
-      httpRequest.end();
-
-    });
-
-    console.log("Successful mutation");
-
-    return {
-        statusCode: 200,
-        body: data
+  var promises = [];
+  
+  event.Records.forEach(record => {
+    //console.log(record.eventID);
+    //console.log(record.eventName);
+    //console.log('DynamoDB Record: %j', record.dynamodb);
+      
+    const item = {
+      input: {
+        sensorId: record.dynamodb.Keys.Device.S,
+        co: record.dynamodb.NewImage.co.M.avgValue.N,
+        humidity: record.dynamodb.NewImage.humidity.M.avgValue.N,
+        no2: record.dynamodb.NewImage.no2.M.avgValue.N,
+        o3: record.dynamodb.NewImage.o3.M.avgValue.N,
+        pm10: record.dynamodb.NewImage.pm10.M.avgValue.N,
+        pm25: record.dynamodb.NewImage.pm25.M.avgValue.N,
+        so2: record.dynamodb.NewImage.so2.M.avgValue.N,
+        temperature: record.dynamodb.NewImage.temperature.M.avgValue.N,
+        status: 1,
+        timestamp: Date.parse(record.dynamodb.Keys.EventTime.S)
+      }
     };
+    
+    console.log("DDB item: %j", JSON.stringify(item))
+    
+    promises.push(submit_appsync(item));
+  });
 
-  }
-  catch (err) {
-    console.log("error: " + err);
-    throw new Error("Error creating sensor value for sensor: " + event.sensorId);
-  }
+  await Promise.all(promises).then(response => {
+    
+    console.log("AppSync Publish received: " + JSON.stringify(response))
+    })
+    .catch(error => console.log(`AppSync Publish Error ${error}`))
+  
+  return;
 }

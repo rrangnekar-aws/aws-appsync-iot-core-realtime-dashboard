@@ -1,6 +1,8 @@
 # aws-appsync-iot-core-realtime-dashboard
 
-This application demonstrates a web application dashboard receiving real-time updates from a series of IoT sensors.  It depicts a fictitious set of pH sensors deployed around the San Francisco Bay. The solution is built with React, AWS AppSync, and AWS IoT Core technologies.
+This application demonstrates a web application dashboard receiving real-time updates from a series of IoT sensors. The solution is built with React, AWS AppSync, and AWS IoT Core technologies.
+
+This has been forked from the original project to depict Air Quality sensors (instead of pH sensors) and also use a DynamoDB stream as a source.
 
 ![Image description](images/map.jpg)
 
@@ -8,7 +10,7 @@ The sensors are represented as the colored dots.  Their color will fluxuate betw
 
 Click on a sensor to view the detailed values received in realtime from that specific sensor.
 
-![Image description](images/sensor.jpg)
+![Image description](images/airquality.png)
 
 ## Architecture
 
@@ -48,6 +50,11 @@ If you run into issues installing or configuring anything in this project please
 ```
 $ git clone https://github.com/aws-samples/aws-appsync-iot-core-realtime-dashboard.git
 ```
+
+**Add your DynamoDB stream ARN**
+
+This project requires a DynamoDB stream ARN which notify the Lambda function to publish data to the dashboard.
+Edit the `web/amplify/backend/function/createsensorvalue/createsensorvalue-cloudformation-template.json` and update the 2 Resource fields which need `<YOUR_DDB_STREAM_ARN>`.
 
 **Switch to the project's web folder**
 
