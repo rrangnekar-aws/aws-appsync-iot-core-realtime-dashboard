@@ -38,6 +38,8 @@ Click on a sensor to view the detailed values received in realtime from that spe
 
 4. A [Mapbox](https://www.mapbox.com/) account with a free *Default Public Access Token*
 
+5. A previously created DynamoDB stream and its ARN.
+
 After you have installed and configured Amplify, take note of the AWS profile you selected during the configuration.  If you created a profile other than **default**, you will need the profile name for later steps in the deployment.
 
 ### **Installing**
